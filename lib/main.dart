@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'dart:async' show Future;
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
@@ -49,6 +51,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  List<String> text = [];
+  String response = 'Empty';
+  load() async {
+    response = await rootBundle.loadString('assets/words.txt');
+    setState(() {
+      text = response.split('\n');
+      print(text[5]);
+    });
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -102,6 +113,16 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
+            Text(response.substring(0, 5)),
+            ElevatedButton(
+                onPressed: () {
+                  load();
+                },
+                child: const Text(
+                  'Solve!',
+                )),
+            MyStatefulWidget(),
+            MyStatefulWidget()
           ],
         ),
       ),
@@ -110,6 +131,80 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class MyStatefulWidget extends StatefulWidget {
+  const MyStatefulWidget({Key? key}) : super(key: key);
+
+  @override
+  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
+}
+
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  String dropdownValue = 'Odaberi slovo';
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      value: dropdownValue,
+      icon: const Icon(Icons.arrow_drop_down),
+      elevation: 16,
+      borderRadius: BorderRadius.circular(7),
+      style: const TextStyle(color: Colors.lightBlue),
+      underline: Container(
+        height: 2,
+        color: Colors.lightBlue,
+      ),
+      onChanged: (String? newValue) {
+        setState(() {
+          dropdownValue = newValue!;
+          print(dropdownValue);
+        });
+      },
+      items: <String>[
+        'Odaberi slovo',
+        'A',
+        'B',
+        'C',
+        'Č',
+        'Ć',
+        'D',
+        'DŽ',
+        'Đ',
+        'E',
+        'F',
+        'G',
+        'H',
+        'I',
+        'J',
+        'K',
+        'L',
+        'LJ',
+        'M',
+        'N',
+        'NJ',
+        'O',
+        'P',
+        'Q',
+        'R',
+        'S',
+        'Š',
+        'T',
+        'U',
+        'V',
+        'W',
+        'X',
+        'Y',
+        'Z',
+        'Ž'
+      ].map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
     );
   }
 }
