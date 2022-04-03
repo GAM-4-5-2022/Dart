@@ -1,7 +1,51 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'dart:async' show Future;
+import 'package:url_launcher/url_launcher.dart';
 
+_launchURL() async {
+  const url = 'https://kveez.com/hr/rijecek/';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
+
+List<String> abeceda = <String>[
+  'Prazno',
+  'A',
+  'B',
+  'C',
+  'Č',
+  'Ć',
+  'D',
+  'DŽ',
+  'Đ',
+  'E',
+  'F',
+  'G',
+  'H',
+  'I',
+  'J',
+  'K',
+  'L',
+  'LJ',
+  'M',
+  'N',
+  'NJ',
+  'O',
+  'P',
+  'R',
+  'S',
+  'Š',
+  'T',
+  'U',
+  'V',
+  'Z',
+  'Ž'
+];
 void main() async {
   runApp(const MyApp());
 }
@@ -13,6 +57,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -26,7 +71,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Flutter Riječek Solver'),
     );
   }
 }
@@ -51,16 +96,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  List<String> text = [];
-  String response = 'Empty';
-  load() async {
-    response = await rootBundle.loadString('assets/words.txt');
-    setState(() {
-      text = response.split('\n');
-      print(text[5]);
-    });
-  }
 
+  String value = "Odaberi slovo";
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -106,23 +143,30 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            RichText(
+              text: TextSpan(
+                  style: const TextStyle(
+                    fontSize: 17.0,
+                    color: Colors.black,
+                  ),
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: 'UPUTE\n\n',
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(
+                      text:
+                          'Na linije napisati slova odvajajući ih zarezom (,).\nZa zelena i žuta slova, poslije svakog slova napisati broj slova u riječi te zatim odvojiti zarezom.',
+                      //style: const TextStyle(fontWeight: FontWeight.bold))
+                    ),
+                  ]),
             ),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
-            Text(response.substring(0, 5)),
+            const MyStatefulWidget(),
             ElevatedButton(
-                onPressed: () {
-                  load();
-                },
-                child: const Text(
-                  'Solve!',
-                )),
-            MyStatefulWidget(),
-            MyStatefulWidget()
+                onPressed: _launchURL, child: const Text('Otvori igru')),
           ],
         ),
       ),
@@ -143,68 +187,153 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  String dropdownValue = 'Odaberi slovo';
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final greyController = TextEditingController();
+  final greenController = TextEditingController();
+  final yellowController = TextEditingController();
+  var words = [];
+  String response = 'Empty';
+  load() async {
+    response = await rootBundle.loadString('assets/words.txt');
+    setState(() {
+      words = response.split('\n');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: dropdownValue,
-      icon: const Icon(Icons.arrow_drop_down),
-      elevation: 16,
-      borderRadius: BorderRadius.circular(7),
-      style: const TextStyle(color: Colors.lightBlue),
-      underline: Container(
-        height: 2,
-        color: Colors.lightBlue,
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          TextFormField(
+            controller: greenController,
+            decoration: const InputDecoration(
+              hintText: 'Zelena slova',
+            ),
+/*             validator: (String? value1) {
+              if (value1 == null || value1.isEmpty) {
+                return 'Please enter some text';
+              }
+              return null;
+            }, */
+          ),
+          TextFormField(
+            controller: yellowController,
+            decoration: const InputDecoration(
+              hintText: 'Žuta slova',
+            ),
+/*             validator: (String? value2) {
+              if (value2 == null || value2.isEmpty) {
+                return 'Please enter some text';
+              }
+              return null;
+            }, */
+          ),
+          TextFormField(
+            controller: greyController,
+            decoration: const InputDecoration(
+              hintText: 'Siva slova',
+            ),
+/*             validator: (String? value3) {
+              if (value3 == null || value3.isEmpty) {
+                return 'Please enter some text';
+              }
+              return null;
+            }, */
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: ElevatedButton(
+              onPressed: () {
+                load();
+                // Validate will return true if the form is valid, or false if
+                // the form is invalid.
+                List<String> grey =
+                    greyController.text.toLowerCase().split(',');
+                List<String> yellow =
+                    yellowController.text.toLowerCase().split(',');
+                List<String> green =
+                    greenController.text.toLowerCase().split(',');
+
+                var greenDict = {};
+                var yellowDict = {};
+                String i;
+
+                if (greenController.text != "") {
+                  for (i in green) {
+                    greenDict[int.parse(i.substring(i.length - 1))] =
+                        i.substring(0, i.length - 1);
+                  }
+                }
+                if (yellowController.text != "") {
+                  for (i in yellow) {
+                    yellowDict[int.parse(i.substring(i.length - 1))] =
+                        i.substring(0, i.length - 1);
+                  }
+                }
+                String word;
+                var possibleWords = [];
+                List<String> alphabet = [];
+                for (int i = 97; i < 123; i++) {
+                  if (String.fromCharCodes([i]) != 'q' &&
+                      String.fromCharCodes([i]) != 'x' &&
+                      String.fromCharCodes([i]) != 'y' &&
+                      String.fromCharCodes([i]) != 'w') {
+                    alphabet.add(String.fromCharCodes([i]));
+                  }
+                }
+                alphabet.add('ć');
+                alphabet.add('č');
+                alphabet.add('dž');
+                alphabet.add('đ');
+                alphabet.add('lj');
+                alphabet.add('nj');
+                alphabet.add('š');
+                alphabet.add('ž');
+                print(yellowController.text);
+                print(yellowDict);
+                var words = response
+                    .split('\n')
+                    .getRange(0, response.split('\n').length - 1);
+
+                for (word in words) {
+                  bool poss = true;
+                  for (i in grey) {
+                    if (word.contains(i)) {
+                      poss = false;
+                    }
+                  }
+                  for (int j in yellowDict.keys) {
+                    if (word.contains(yellowDict[j]) != true ||
+                        word.substring(j - 1, j) == yellowDict[j]) {
+                      poss = false;
+                    }
+                  }
+                  for (int j in greenDict.keys) {
+                    if (word.substring(j - 1, j) != greenDict[j]) {
+                      poss = false;
+                    }
+                  }
+                  if (poss) {
+                    possibleWords.add(word);
+                  }
+                }
+                for (i in possibleWords) {
+                  print(i);
+                }
+                print('Pronađeno ${possibleWords.length} riječi.');
+
+                if (_formKey.currentState!.validate()) {
+                  // Process data.
+                }
+              },
+              child: const Text('Unesi'),
+            ),
+          ),
+        ],
       ),
-      onChanged: (String? newValue) {
-        setState(() {
-          dropdownValue = newValue!;
-          print(dropdownValue);
-        });
-      },
-      items: <String>[
-        'Odaberi slovo',
-        'A',
-        'B',
-        'C',
-        'Č',
-        'Ć',
-        'D',
-        'DŽ',
-        'Đ',
-        'E',
-        'F',
-        'G',
-        'H',
-        'I',
-        'J',
-        'K',
-        'L',
-        'LJ',
-        'M',
-        'N',
-        'NJ',
-        'O',
-        'P',
-        'Q',
-        'R',
-        'S',
-        'Š',
-        'T',
-        'U',
-        'V',
-        'W',
-        'X',
-        'Y',
-        'Z',
-        'Ž'
-      ].map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
     );
   }
 }
