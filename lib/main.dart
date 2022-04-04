@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      themeMode: ThemeMode.dark,
+      //darkTheme: new ThemeData(scaffoldBackgroundColor: const Color(0x121212)),
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -288,8 +288,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 for (i in possibleWords) {
                   print(i);
                 }
+                //if (possibleWords.length != 0) {
                 log =
                     'Pronađeno ${possibleWords.length} riječi: $possibleWords.';
+                //}
+
                 if (_formKey.currentState!.validate()) {
                   // Process data.
                 }
