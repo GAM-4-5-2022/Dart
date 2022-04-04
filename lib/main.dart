@@ -59,16 +59,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
+      themeMode: ThemeMode.dark,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Flutter Riječek Solver'),
@@ -79,15 +71,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -95,19 +78,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
   String value = "Odaberi slovo";
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -156,13 +127,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     TextSpan(
                       text:
                           'Na linije napisati slova odvajajući ih zarezom (,).\nZa zelena i žuta slova, poslije svakog slova napisati broj slova u riječi te zatim odvojiti zarezom.',
-                      //style: const TextStyle(fontWeight: FontWeight.bold))
                     ),
                   ]),
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
             ),
             const MyStatefulWidget(),
             ElevatedButton(
@@ -170,11 +136,8 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
@@ -192,9 +155,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final greenController = TextEditingController();
   final yellowController = TextEditingController();
   var words = [];
+  var possibleWords = [];
+  String log = '';
   String response = 'Empty';
   load() async {
-    response = await rootBundle.loadString('assets/words.txt');
+    response = await rootBundle.loadString('assets/words_github.txt');
     setState(() {
       words = response.split('\n');
     });
@@ -267,12 +232,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         i.substring(0, i.length - 1);
                   }
                 }
-                if (yellowController.text != "") {
-                  for (i in yellow) {
-                    yellowDict[int.parse(i.substring(i.length - 1))] =
-                        i.substring(0, i.length - 1);
-                  }
-                }
                 String word;
                 var possibleWords = [];
                 List<String> alphabet = [];
@@ -292,28 +251,34 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 alphabet.add('nj');
                 alphabet.add('š');
                 alphabet.add('ž');
-                print(yellowController.text);
-                print(yellowDict);
                 var words = response
                     .split('\n')
                     .getRange(0, response.split('\n').length - 1);
 
                 for (word in words) {
                   bool poss = true;
-                  for (i in grey) {
-                    if (word.contains(i)) {
-                      poss = false;
+                  if (greyController.text != '') {
+                    for (i in grey) {
+                      if (word.contains(i)) {
+                        poss = false;
+                      }
                     }
                   }
-                  for (int j in yellowDict.keys) {
-                    if (word.contains(yellowDict[j]) != true ||
-                        word.substring(j - 1, j) == yellowDict[j]) {
-                      poss = false;
+                  if (yellowController.text != '') {
+                    for (i in yellow) {
+                      int place = int.parse(i.substring(i.length - 1));
+                      String letter = i.substring(0, i.length - 1);
+                      if (word.contains(letter) != true ||
+                          word.substring(place - 1, place) == letter) {
+                        poss = false;
+                      }
                     }
                   }
-                  for (int j in greenDict.keys) {
-                    if (word.substring(j - 1, j) != greenDict[j]) {
-                      poss = false;
+                  if (greenController.text != '') {
+                    for (int j in greenDict.keys) {
+                      if (word.substring(j - 1, j) != greenDict[j]) {
+                        poss = false;
+                      }
                     }
                   }
                   if (poss) {
@@ -323,15 +288,16 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 for (i in possibleWords) {
                   print(i);
                 }
-                print('Pronađeno ${possibleWords.length} riječi.');
-
+                log =
+                    'Pronađeno ${possibleWords.length} riječi: $possibleWords.';
                 if (_formKey.currentState!.validate()) {
                   // Process data.
                 }
               },
-              child: const Text('Unesi'),
+              child: const Text('Pretraži'),
             ),
           ),
+          Text(log),
         ],
       ),
     );
