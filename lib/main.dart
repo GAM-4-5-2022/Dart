@@ -156,12 +156,18 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final yellowController = TextEditingController();
   var words = [];
   var possibleWords = [];
+  int freq_sum = 0;
   String log = '';
   String response = 'Empty';
+  var words_dict = {};
   load() async {
     response = await rootBundle.loadString('assets/words.txt');
     setState(() {
       words = response.split('\n');
+      for (String word in words) {
+        words_dict[word.substring(0, word.indexOf(';'))] =
+            int.parse(word.substring(word.indexOf(';'), word.length));
+      }
     });
   }
 
@@ -233,7 +239,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   }
                 }
                 String word;
-                var possibleWords = [];
+                var possibleWords = {};
                 List<String> alphabet = [];
                 for (int i = 97; i < 123; i++) {
                   if (String.fromCharCodes([i]) != 'q' &&
@@ -255,7 +261,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     .split('\n')
                     .getRange(0, response.split('\n').length - 1);
 
-                for (word in words) {
+                for (word in words_dict.keys) {
+                  int freq =
+                      int.parse(word.substring(word.indexOf(';'), word.length));
                   word = word.substring(0, word.indexOf(';'));
                   bool poss = true;
                   if (greyController.text != '') {
@@ -283,16 +291,16 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     }
                   }
                   if (poss) {
-                    possibleWords.add(word);
+                    possibleWords[word] = freq;
                   }
                 }
-                for (i in possibleWords) {
+                for (i in possibleWords.keys) {
                   print(i);
                 }
-                //if (possibleWords.length != 0) {
-                log =
-                    'Pronađeno ${possibleWords.length} riječi: $possibleWords.';
-                //}
+                if (possibleWords.isNotEmpty) {
+                  log =
+                      'Pronađeno ${possibleWords.length} riječi: $possibleWords.';
+                }
 
                 if (_formKey.currentState!.validate()) {
                   // Process data.
