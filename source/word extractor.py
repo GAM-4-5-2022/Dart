@@ -25,7 +25,8 @@ for line in open('savewl_hrwac_20220328190754.xml', 'r'):
         mod_lines.add(string+';'+freq+'\n')
         lock = False
 
-
+mod_lines = sorted(mod_lines, key=lambda line: int(
+    line[line.find(';')+1:line.find('\n')]), reverse=True)
 f = open('words.txt', 'w')
 f.writelines(mod_lines)
 f.close()
