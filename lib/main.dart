@@ -159,7 +159,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   String log = '';
   String response = 'Empty';
   load() async {
-    response = await rootBundle.loadString('assets/words_github.txt');
+    response = await rootBundle.loadString('assets/words.txt');
     setState(() {
       words = response.split('\n');
     });
@@ -256,6 +256,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     .getRange(0, response.split('\n').length - 1);
 
                 for (word in words) {
+                  word = word.substring(0, word.indexOf(';'));
                   bool poss = true;
                   if (greyController.text != '') {
                     for (i in grey) {
