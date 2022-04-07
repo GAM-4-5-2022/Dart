@@ -13,39 +13,6 @@ _launchURL() async {
   }
 }
 
-List<String> abeceda = <String>[
-  'Prazno',
-  'A',
-  'B',
-  'C',
-  'Č',
-  'Ć',
-  'D',
-  'DŽ',
-  'Đ',
-  'E',
-  'F',
-  'G',
-  'H',
-  'I',
-  'J',
-  'K',
-  'L',
-  'LJ',
-  'M',
-  'N',
-  'NJ',
-  'O',
-  'P',
-  'R',
-  'S',
-  'Š',
-  'T',
-  'U',
-  'V',
-  'Z',
-  'Ž'
-];
 void main() async {
   runApp(const MyApp());
 }
@@ -53,13 +20,11 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      //darkTheme: new ThemeData(scaffoldBackgroundColor: const Color(0x121212)),
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -82,16 +47,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    // This method is rerun every time setState is called
+
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Center(
@@ -136,8 +95,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-
-      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
@@ -159,15 +116,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int freq_sum = 0;
   String log = '';
   String response = 'Empty';
-  var words_dict = {};
   load() async {
     response = await rootBundle.loadString('assets/words.txt');
     setState(() {
       words = response.split('\n');
-      for (String word in words) {
-        words_dict[word.substring(0, word.indexOf(';'))] =
-            int.parse(word.substring(word.indexOf(';'), word.length));
-      }
     });
   }
 
@@ -219,8 +171,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             child: ElevatedButton(
               onPressed: () {
                 load();
-                // Validate will return true if the form is valid, or false if
-                // the form is invalid.
                 List<String> grey =
                     greyController.text.toLowerCase().split(',');
                 List<String> yellow =
@@ -261,11 +211,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     .split('\n')
                     .getRange(0, response.split('\n').length - 1);
 
-                for (word in words_dict.keys) {
-                  int freq =
-                      int.parse(word.substring(word.indexOf(';'), word.length));
+                for (word in words) {
+                  int freq = int.parse(
+                      word.substring(word.indexOf(';') + 1, word.length));
                   word = word.substring(0, word.indexOf(';'));
                   bool poss = true;
+                  freq_sum += freq;
                   if (greyController.text != '') {
                     for (i in grey) {
                       if (word.contains(i)) {
@@ -297,14 +248,19 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 for (i in possibleWords.keys) {
                   print(i);
                 }
+                String output = '';
+                for (int i = 0; i < 4; i++) {
+                  if (i < 4 - 1) {
+                    output += (possibleWords.keys.elementAt(i) + ', ');
+                  } else {
+                    output += possibleWords.keys.elementAt(i);
+                  }
+                }
                 if (possibleWords.isNotEmpty) {
-                  log =
-                      'Pronađeno ${possibleWords.length} riječi: $possibleWords.';
+                  log = 'Pronađeno ${possibleWords.length} riječi: $output.';
                 }
 
-                if (_formKey.currentState!.validate()) {
-                  // Process data.
-                }
+                if (_formKey.currentState!.validate()) {}
               },
               child: const Text('Pretraži'),
             ),

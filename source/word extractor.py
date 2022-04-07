@@ -4,7 +4,7 @@ alphabet = ['a', 'b', 'c', 'č', 'ć', 'd', 'dž', 'đ', 'e', 'f', 'g', 'h', 'i'
             'k', 'l', 'lj', 'm', 'n', 'nj', 'o', 'p', 'r', 's', 'š', 't', 'u', 'v', 'z', 'ž']
 double = ['dž', 'lj', 'nj']
 lock = False
-for line in open('savewl_hrwac_20220328190754.xml', 'r'):
+for line in open('source/savewl_hrwac_20220328190754.xml', 'r'):
     br += 1
     if str(br)[len(str(br))-6:] == '000000':
         print(br)
@@ -27,6 +27,6 @@ for line in open('savewl_hrwac_20220328190754.xml', 'r'):
 
 mod_lines = sorted(mod_lines, key=lambda line: int(
     line[line.find(';')+1:line.find('\n')]), reverse=True)
-f = open('words.txt', 'w')
+f = open('assets/words.txt', 'w')
 f.writelines(mod_lines)
 f.close()
