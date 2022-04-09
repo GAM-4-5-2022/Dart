@@ -14,7 +14,7 @@ _launchURL() async {
 }
 
 void main() async {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -111,17 +111,21 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final greyController = TextEditingController();
   final greenController = TextEditingController();
   final yellowController = TextEditingController();
+  final numController = TextEditingController();
+
+  String log = '';
+  /*
   var words = [];
   var possibleWords = [];
   int freq_sum = 0;
   String log = '';
-  String response = 'Empty';
+  String response = '';
   load() async {
     response = await rootBundle.loadString('assets/words.txt');
     setState(() {
       words = response.split('\n');
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -166,17 +170,38 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               return null;
             }, */
           ),
+          TextFormField(
+            controller: numController,
+            decoration: const InputDecoration(
+              hintText: 'Broj ponuđenih riječi (4 je default)',
+            ),
+/*             validator: (String? value1) {
+              if (value1 == null || value1.isEmpty) {
+                return 'Samo brojke dopuštene';
+              }
+              return null;
+            }, */
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
-              onPressed: () {
-                load();
+              onPressed: () async {
+                //load();
+                //var words=[];
+                String response;
+
+                response = await rootBundle.loadString('assets/words.txt');
+
                 List<String> grey =
                     greyController.text.toLowerCase().split(',');
                 List<String> yellow =
                     yellowController.text.toLowerCase().split(',');
                 List<String> green =
                     greenController.text.toLowerCase().split(',');
+                int wordNum = 4;
+                if (numController.text != "") {
+                  wordNum = int.parse(numController.text);
+                }
 
                 var greenDict = {};
                 var yellowDict = {};
@@ -190,23 +215,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 }
                 String word;
                 var possibleWords = {};
-                List<String> alphabet = [];
-                for (int i = 97; i < 123; i++) {
-                  if (String.fromCharCodes([i]) != 'q' &&
-                      String.fromCharCodes([i]) != 'x' &&
-                      String.fromCharCodes([i]) != 'y' &&
-                      String.fromCharCodes([i]) != 'w') {
-                    alphabet.add(String.fromCharCodes([i]));
-                  }
-                }
-                alphabet.add('ć');
-                alphabet.add('č');
-                alphabet.add('dž');
-                alphabet.add('đ');
-                alphabet.add('lj');
-                alphabet.add('nj');
-                alphabet.add('š');
-                alphabet.add('ž');
+
                 var words = response
                     .split('\n')
                     .getRange(0, response.split('\n').length - 1);
@@ -216,7 +225,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       word.substring(word.indexOf(';') + 1, word.length));
                   word = word.substring(0, word.indexOf(';'));
                   bool poss = true;
-                  freq_sum += freq;
+                  //freq_sum += freq;
                   if (greyController.text != '') {
                     for (i in grey) {
                       if (word.contains(i)) {
@@ -245,19 +254,27 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     possibleWords[word] = freq;
                   }
                 }
-                for (i in possibleWords.keys) {
+                /*for (i in possibleWords.keys) {
                   print(i);
-                }
+                }*/
                 String output = '';
-                for (int i = 0; i < 4; i++) {
-                  if (i < 4 - 1) {
-                    output += (possibleWords.keys.elementAt(i) + ', ');
-                  } else {
-                    output += possibleWords.keys.elementAt(i);
+                if (possibleWords.isNotEmpty) {
+                  for (int i = 0; i < wordNum; i++) {
+                    if (i < wordNum - 1) {
+                      output += (possibleWords.keys.elementAt(i) + ', ');
+                    } else {
+                      output += possibleWords.keys.elementAt(i);
+                    }
                   }
                 }
                 if (possibleWords.isNotEmpty) {
-                  log = 'Pronađeno ${possibleWords.length} riječi: $output.';
+                  setState(() {
+                    log = 'Pronađeno ${possibleWords.length} riječi: $output.';
+                  });
+                } else {
+                  setState(() {
+                    log = "Nije pronađena nijedna riječ.";
+                  });
                 }
 
                 if (_formKey.currentState!.validate()) {}
