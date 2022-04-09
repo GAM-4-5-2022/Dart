@@ -47,30 +47,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             RichText(
@@ -114,18 +96,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final numController = TextEditingController();
 
   String log = '';
-  /*
-  var words = [];
-  var possibleWords = [];
-  int freq_sum = 0;
-  String log = '';
-  String response = '';
-  load() async {
-    response = await rootBundle.loadString('assets/words.txt');
-    setState(() {
-      words = response.split('\n');
-    });
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -186,8 +156,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
               onPressed: () async {
-                //load();
-                //var words=[];
                 String response;
 
                 response = await rootBundle.loadString('assets/words.txt');
@@ -225,7 +193,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       word.substring(word.indexOf(';') + 1, word.length));
                   word = word.substring(0, word.indexOf(';'));
                   bool poss = true;
-                  //freq_sum += freq;
                   if (greyController.text != '') {
                     for (i in grey) {
                       if (word.contains(i)) {
@@ -254,16 +221,16 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     possibleWords[word] = freq;
                   }
                 }
-                /*for (i in possibleWords.keys) {
-                  print(i);
-                }*/
+
                 String output = '';
                 if (possibleWords.isNotEmpty) {
                   for (int i = 0; i < wordNum; i++) {
-                    if (i < wordNum - 1) {
-                      output += (possibleWords.keys.elementAt(i) + ', ');
-                    } else {
-                      output += possibleWords.keys.elementAt(i);
+                    if (i < possibleWords.length) {
+                      if (i < wordNum - 1 && i < possibleWords.length - 1) {
+                        output += (possibleWords.keys.elementAt(i) + ', ');
+                      } else {
+                        output += possibleWords.keys.elementAt(i);
+                      }
                     }
                   }
                 }
@@ -273,7 +240,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   });
                 } else {
                   setState(() {
-                    log = "Nije pronađena nijedna riječ.";
+                    log =
+                        "Nije pronađena nijedna riječ. \nProvjerite jesu li svi podaci ispravno upisani.";
                   });
                 }
 
