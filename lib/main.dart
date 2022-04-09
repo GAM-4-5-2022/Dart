@@ -51,101 +51,112 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: GradientText(
-                'Riječek Solver',
-                style: TextStyle(fontSize: 40),
-                colors: [
-                  Colors.red,
-                  Colors.pink,
-                  Colors.purple,
-                  Colors.deepPurple,
-                  Colors.deepPurple,
-                  Colors.indigo,
-                  Colors.green,
-                  Colors.lightGreen,
-                  Colors.lime,
-                  Colors.yellow,
-                  Colors.amber,
-                  Colors.orange,
-                  Colors.deepOrange,
-                ]),
-              ),
+          'Riječek Solver',
+          style: TextStyle(fontSize: 40),
+          colors: [
+            Colors.red,
+            Colors.pink,
+            Colors.purple,
+            Colors.deepPurple,
+            Colors.deepPurple,
+            Colors.indigo,
+            Colors.green,
+            Colors.lightGreen,
+            Colors.lime,
+            Colors.yellow,
+            Colors.amber,
+            Colors.orange,
+            Colors.deepOrange,
+          ]
+        ),
+      ),
       
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: RichText(
-                text: TextSpan(
-                    style: const TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.black,
-                    ),
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: 'UPUTE\n\n',
-                          style: const TextStyle(fontWeight: FontWeight.bold)),
-                      TextSpan(
-                        text:
-                            'Na linije napisati slova odvajajući ih zarezom (,).\nZa zelena i žuta slova, poslije svakog slova napisati broj slova u riječi te zatim odvojiti zarezom.',
-                      ),
-                    ]),
+            RichText(
+              text: TextSpan(
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                  color: Colors.black,
+                  height: 5,
+                  leadingDistribution: TextLeadingDistribution.even,
+                ),
+                text: 'UPUTE',
               ),
             ),
+
+            Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                    color: Colors.black,
+                  ),
+                  text: 'Na linije napisati slova odvajajući ih zarezom\nZa zelena i žuta slova, poslije svakog slova napisati broj slova u riječi te zatim odvojiti zarezom\n',
+                ),
+              ),
+            ),
+
             const MyStatefulWidget(),
             InkWell(
-              onTap: () {
-                _launchURL;},
+              onTap: () {_launchURL;},
               child:  Container(
-            height: MediaQuery.of(context).size.height * 1 / 12,
-            width: MediaQuery.of(context).size.width * 3 / 6,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                  Colors.red,
-                  Colors.pink,
-                  Colors.purple,
-                  Colors.deepPurple,
-                  Colors.deepPurple,
-                  Colors.indigo,
-                  Colors.green,
-                  Colors.lightGreen,
-                  Colors.lime,
-                  Colors.yellow,
-                  Colors.amber,
-                  Colors.orange,
-                  Colors.deepOrange,
-                ]),
-              borderRadius: BorderRadius.circular(16.0),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              // ignore: prefer_const_literals_to_create_immutables
-              children: [
-                const Text(""),
-                const Text(
-                  "Otvori igru",
-                  style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
+                height: MediaQuery.of(context).size.height * 1 / 14,
+                width: MediaQuery.of(context).size.width * 3 / 7,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.red,
+                        Colors.pink,
+                        Colors.purple,
+                        Colors.deepPurple,
+                        Colors.deepPurple,
+                        Colors.indigo,
+                        Colors.green,
+                        Colors.lightGreen,
+                        Colors.lime,
+                        Colors.yellow,
+                        Colors.amber,
+                        Colors.orange,
+                        Colors.deepOrange,
+                      ]
+                  ),
+                  borderRadius: BorderRadius.circular(16.0),
                 ),
-                Container(
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.white),
-                    child: const Icon(
-                      Icons.arrow_right_alt_outlined,
-                      size: 25.0,
-                      color: Colors.green,
-                    ))
-              ],
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  // ignore: prefer_const_literals_to_create_immutables
+                  children: [
+                    const Text(""),
+                    const Text(
+                      "Otvori igru",
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white
+                      ),
+                    ),
+                    Container(
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.white),
+                        child: const Icon(
+                          Icons.arrow_right_alt_outlined,
+                          size: 25.0,
+                          color: Colors.green,
+                        )
+                    )
+                  ],
+                ),
+              ),
             ),
-          ),
-        ),
           ],
         ),
       ),
