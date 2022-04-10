@@ -96,24 +96,27 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: GradientText('Riječek Solver',
-            style: TextStyle(fontSize: 40),
-            colors: [
-              Colors.red,
-              Colors.pink,
-              Colors.purple,
-              Colors.deepPurple,
-              Colors.deepPurple,
-              Colors.indigo,
-              Colors.green,
-              Colors.lightGreen,
-              Colors.lime,
-              Colors.yellow,
-              Colors.amber,
-              Colors.orange,
-              Colors.deepOrange,
-            ]),
+        title: GradientText(
+          'Riječek Solver',
+          style: TextStyle(fontSize: 40),
+          colors: [
+            Colors.red,
+            Colors.pink,
+            Colors.purple,
+            Colors.deepPurple,
+            Colors.deepPurple,
+            Colors.indigo,
+            Colors.green,
+            Colors.lightGreen,
+            Colors.lime,
+            Colors.yellow,
+            Colors.amber,
+            Colors.orange,
+            Colors.deepOrange,
+          ]
+        ),
       ),
       body: Center(
         child: Column(
