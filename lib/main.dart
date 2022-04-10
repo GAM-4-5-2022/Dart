@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, unused_local_variable
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, unused_local_variable, duplicate_ignore
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -50,30 +50,26 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: GradientText(
-          'Riječek Solver',
-          style: TextStyle(fontSize: 40),
-          colors: [
-            Colors.red,
-            Colors.pink,
-            Colors.purple,
-            Colors.deepPurple,
-            Colors.deepPurple,
-            Colors.indigo,
-            Colors.green,
-            Colors.lightGreen,
-            Colors.lime,
-            Colors.yellow,
-            Colors.amber,
-            Colors.orange,
-            Colors.deepOrange,
-          ]
-        ),
+        title: GradientText('Riječek Solver',
+            style: TextStyle(fontSize: 40),
+            colors: [
+              Colors.red,
+              Colors.pink,
+              Colors.purple,
+              Colors.deepPurple,
+              Colors.deepPurple,
+              Colors.indigo,
+              Colors.green,
+              Colors.lightGreen,
+              Colors.lime,
+              Colors.yellow,
+              Colors.amber,
+              Colors.orange,
+              Colors.deepOrange,
+            ]),
       ),
-      
       body: Center(
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             RichText(
               text: TextSpan(
@@ -87,7 +83,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 text: 'UPUTE',
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.all(14.0),
               child: RichText(
@@ -97,15 +92,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     fontSize: 18.0,
                     color: Colors.black,
                   ),
-                  text: 'Na linije napisati slova odvajajući ih zarezom\nZa zelena i žuta slova, poslije svakog slova napisati broj slova u riječi te zatim odvojiti zarezom\n',
+                  text:
+                      'Na linije napisati slova odvajajući ih zarezom\nZa zelena i žuta slova, poslije svakog slova napisati broj slova u riječi te zatim odvojiti zarezom\n',
                 ),
               ),
             ),
-
             const MyStatefulWidget(),
             InkWell(
-              onTap: () {_launchURL;},
-              child:  Container(
+              onTap: () {
+                _launchURL();
+              },
+              child: Container(
                 height: MediaQuery.of(context).size.height * 1 / 14,
                 width: MediaQuery.of(context).size.width * 3 / 7,
                 decoration: BoxDecoration(
@@ -126,13 +123,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         Colors.amber,
                         Colors.orange,
                         Colors.deepOrange,
-                      ]
-                  ),
+                      ]),
                   borderRadius: BorderRadius.circular(16.0),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  // ignore: prefer_const_literals_to_create_immutables
                   children: [
                     const Text(""),
                     const Text(
@@ -140,8 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       style: TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.w600,
-                          color: Colors.white
-                      ),
+                          color: Colors.white),
                     ),
                     Container(
                         padding: const EdgeInsets.all(8.0),
@@ -151,8 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           Icons.arrow_right_alt_outlined,
                           size: 25.0,
                           color: Colors.green,
-                        )
-                    )
+                        ))
                   ],
                 ),
               ),
@@ -192,10 +185,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             TextFormField(
               controller: greenController,
               decoration: const InputDecoration(
-                hintText: 'Zelena slova',
-                hintStyle: TextStyle(color: Colors.green,fontWeight: FontWeight.bold)
-                
-              ),
+                  hintText: 'Zelena slova',
+                  hintStyle: TextStyle(
+                      color: Colors.green, fontWeight: FontWeight.bold)),
 /*             validator: (String? value1) {
                 if (value1 == null || value1.isEmpty) {
                   return 'Please enter some text';
@@ -206,9 +198,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             TextFormField(
               controller: yellowController,
               decoration: const InputDecoration(
-                hintText: 'Žuta slova',
-                hintStyle: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold)
-              ),
+                  hintText: 'Žuta slova',
+                  hintStyle: TextStyle(
+                      color: Colors.amber, fontWeight: FontWeight.bold)),
 /*             validator: (String? value2) {
                 if (value2 == null || value2.isEmpty) {
                   return 'Please enter some text';
@@ -219,9 +211,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             TextFormField(
               controller: greyController,
               decoration: const InputDecoration(
-                hintText: 'Siva slova',
-                hintStyle: TextStyle(color: Color.fromARGB(255, 127, 128, 127), fontWeight: FontWeight.bold)
-              ),
+                  hintText: 'Siva slova',
+                  hintStyle: TextStyle(
+                      color: Color.fromARGB(255, 127, 128, 127),
+                      fontWeight: FontWeight.bold)),
 /*             validator: (String? value3) {
                 if (value3 == null || value3.isEmpty) {
                   return 'Please enter some text';
@@ -232,9 +225,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             TextFormField(
               controller: numController,
               decoration: const InputDecoration(
-                hintText: 'Broj ponuđenih riječi (4 je default)',
-                hintStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
-              ),
+                  hintText: 'Broj ponuđenih riječi (4 je default)',
+                  hintStyle: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold)),
 /*             validator: (String? value1) {
                 if (value1 == null || value1.isEmpty) {
                   return 'Samo brojke dopuštene';
@@ -338,44 +331,41 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: Container(
-                child:  Container(
-              height: MediaQuery.of(context).size.height * 1 / 15,
-              width: MediaQuery.of(context).size.width * 3 / 7,
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                    Colors.lightBlue,
-                    Colors.cyan,
-                  ]),
-                borderRadius: BorderRadius.circular(16.0),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                // ignore: prefer_const_literals_to_create_immutables
-                children: [
-                  const Text(""),
-                  const Text(
-                    "Pretraži",
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white),
+                  height: MediaQuery.of(context).size.height * 1 / 15,
+                  width: MediaQuery.of(context).size.width * 3 / 7,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.lightBlue,
+                          Colors.cyan,
+                        ]),
+                    borderRadius: BorderRadius.circular(16.0),
                   ),
-                  Container(
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.white),
-                      child: const Icon(
-                        Icons.search,
-                        size: 25.0,
-                        color: Colors.green,
-                      ))
-                ],
-              ),
-          ),
-        ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      const Text(""),
+                      const Text(
+                        "Pretraži",
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white),
+                      ),
+                      Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.white),
+                          child: const Icon(
+                            Icons.search,
+                            size: 25.0,
+                            color: Colors.green,
+                          ))
+                    ],
+                  ),
+                ),
               ),
             ),
             Text(log),
